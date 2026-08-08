@@ -1,0 +1,2 @@
+[console_scripts]
+opngl = opngl.__main__:main

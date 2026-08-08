@@ -1,6 +1,36 @@
+Metadata-Version: 2.4
+Name: opngl
+Version: 0.1.0
+Summary: Motor gráfico sobre Vulkan puro, escrito en Python
+Author: BluePanda
+License: MIT (con cláusula de atribución BluePanda)
+Project-URL: Homepage, https://github.com/aminbena010-ai/OpnGL
+Project-URL: Repository, https://github.com/aminbena010-ai/OpnGL
+Keywords: vulkan,ui,gui,gamedev,opengl
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Multimedia :: Graphics
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: glfw
+Requires-Dist: vulkan
+Requires-Dist: Pillow
+Provides-Extra: audio
+Requires-Dist: miniaudio; extra == "audio"
+Dynamic: license-file
+
 <div align="center">
 
-![Texto alternativo de la imagen](assets/logo.png)
+# OpnGL
 
 **Motor gráfico sobre Vulkan puro, escrito en Python.**
 

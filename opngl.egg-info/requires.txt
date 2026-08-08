@@ -1,0 +1,6 @@
+glfw
+vulkan
+Pillow
+
+[audio]
+miniaudio
