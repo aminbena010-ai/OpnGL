@@ -1,19 +1,18 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
+requires = ["setuptools>=77.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "opngl"
-version = "0.1.0"
+version = "0.1.1"
 description = "Motor gráfico y de interfaz de usuario de escritorio basado en Python y Vulkan"
 readme = "README.md"
 authors = [
     { name = "BluePanda" }
 ]
-license = { text = "MIT" }
+license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Application Frameworks"
 ]

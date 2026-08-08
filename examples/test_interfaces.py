@@ -13,14 +13,12 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from opngl import App, load_interfaces_from_dir
+from opngl import App, load_xmls, xml
 
 
 def main():
-    examples_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
-    interfaces_dir = os.path.join(examples_dir, "interfaces")
-
-    app, interfaces = load_interfaces_from_dir(interfaces_dir)
+    interfaces_dir = xml("interfaces/")
+    app, interfaces = load_xmls(interfaces_dir)
     print("[Test] Interfaces cargadas: {}".format(", ".join(interfaces)))
 
     app.on_click("btn_render", lambda b: print("[Test] Renderizar pulsado"))

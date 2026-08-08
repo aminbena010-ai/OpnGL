@@ -37,6 +37,7 @@
 # =========================================================================
 import fnmatch
 import time
+import inspect
 
 import os
 
@@ -504,7 +505,7 @@ class OpnGL:
 # ------------------------------------------------------------------------
 # Carga de interfaces desde XML
 # ------------------------------------------------------------------------
-def load_interfaces_from_dir(directory, pattern="*.xml"):
+def load_xmls(directory, pattern="*.xml"):
     """Función de nivel superior: crea una App y carga TODOS los .xml de
     `directory` como interfaces (nombre = archivo sin extensión), listos para
     usarse con app.set_interface() / app.on_click().
@@ -528,3 +529,52 @@ def load_interfaces_from_dir(directory, pattern="*.xml"):
     app = App(files[0])
     app.load_interfaces(*files[1:])
     return app, app.interfaces
+
+import os
+import inspect
+import fnmatch
+
+def xml(filename_or_pattern):
+    """
+    Busca archivos XML o directorios:
+    - xml("ui/render/game/layot.xml") -> Busca esa ruta exacta de archivo.
+    - xml("interfaces/*.xml") -> Busca archivos que coincidan con un patrón o comodín.
+    - xml("nombre") -> Busca en 'interfaces/' o en la raíz.
+    - xml("nombre_carpeta") -> Devuelve la ruta absoluta si es un directorio.
+    """
+    # 1. Obtener la base del script que hace la llamada
+    caller_frame = inspect.currentframe().f_back
+    caller_file = caller_frame.f_globals.get('__file__')
+    base_dir = os.path.dirname(os.path.abspath(caller_file)) if caller_file else os.path.abspath(".")
+
+    # 2. Si contiene comodines (ej. "*.xml") o barras con comodines
+    if "*" in filename_or_pattern or "?" in filename_or_pattern:
+        full_path = os.path.join(base_dir, filename_or_pattern)
+        return full_path
+
+    # 3. Si el usuario pasa una ruta completa (contiene '/' o '\')
+    if "/" in filename_or_pattern or "\\" in filename_or_pattern:
+        full_path = os.path.join(base_dir, filename_or_pattern)
+        if os.path.isdir(full_path):
+            return full_path
+        if os.path.isfile(full_path):
+            return full_path
+        raise FileNotFoundError(f"[OpnGL] Ruta no encontrada: '{full_path}'")
+
+    # 4. Si es un nombre de carpeta directa en la raíz
+    dir_path = os.path.join(base_dir, filename_or_pattern)
+    if os.path.isdir(dir_path):
+        return dir_path
+
+    # 5. Si es un nombre simple, añadir .xml si no lo tiene y buscar en estándar
+    filename = filename_or_pattern
+    if not filename.endswith(".xml"):
+        filename += ".xml"
+
+    # Buscar en 'interfaces/' o en la raíz
+    for path in [os.path.join(base_dir, "interfaces", filename), os.path.join(base_dir, filename)]:
+        if os.path.isfile(path):
+            return path
+            
+    raise FileNotFoundError(f"[OpnGL] No se encontró el archivo o directorio XML: '{filename_or_pattern}'")
+    
