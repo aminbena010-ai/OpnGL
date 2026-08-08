@@ -1,0 +1,33 @@
+LICENCIA MIT — OpnGL (con cláusula de atribución BluePanda)
+===========================================================
+
+Copyright (c) 2026 BluePanda
+
+OpnGL — Motor gráfico sobre Vulkan puro (Python).
+
+Se concede permiso, de forma gratuita, a cualquier persona que obtenga una
+copia de este software y de los archivos de documentación asociados (el
+"Software"), para utilizar el Software sin restricción, incluidos, sin
+limitación, los derechos de usar, copiar, modificar, fusionar, publicar,
+distribuir, sublicenciar y/o vender copias del Software, y a permitir que las
+personas a las que se les proporcione el Software hagan lo mismo, con sujeción
+a las siguientes condiciones:
+
+1. El aviso de copyright anterior y este aviso de permiso se incluirán en
+   todas las copias o partes sustanciales del Software.
+
+2. Atribución a BluePanda. Cualquier copia, versión modificada o trabajo
+   derivado del Software que se distribuya, publique o se incluya en otro
+   producto deberá mantener, de forma visible y legible, la mención de
+   "BluePanda" como titular y desarrollador original del proyecto, junto con
+   el nombre del proyecto "OpnGL". Esta mención podrá incluirse en el aviso de
+   copyright del código fuente, en la cabecera de los archivos, en la pantalla
+   "Acerca de" de la aplicación, o en la documentación del proyecto.
+
+EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O
+IMPLÍCITA, INCLUIDAS, PERO NO LIMITADAS A, LAS GARANTÍAS DE COMERCIABILIDAD,
+IDONEIDAD PARA UN FIN PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES O
+TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN, DAÑO U OTRA
+RESPONSABILIDAD, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O DE OTRO TIPO, QUE
+SURJA DE, O EN RELACIÓN CON, EL SOFTWARE O EL USO U OTROS ACUERDOS EN EL
+SOFTWARE.
