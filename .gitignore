@@ -7,19 +7,6 @@ dist/
 # Python
 __pycache__/
 
-*$py.class
-*.so
-*.dylib
-.Python
-.venv/
-venv/
-env/
-*.pyc
-*.pyo
-.coverage
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
 
 # Vulkan / shaders compilados
 bin/
