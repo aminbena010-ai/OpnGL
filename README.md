@@ -1,6 +1,6 @@
 <div align="center">
 
-![Texto alternativo de la imagen](assets/logo.png)
+![Texto alternativo de la imagen](https://raw.githubusercontent.com/aminbena010-ai/OpnGL/refs/heads/Main/assets/logo.png)
 
 **Motor gráfico sobre Vulkan puro, escrito en Python.**
 
