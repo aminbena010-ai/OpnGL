@@ -1,0 +1,14 @@
+<!-- Interfaz secundaria con su propio diseño (título y fondo propios). -->
+<AppWindow width="1200" height="760" title="Opciones · OpnGL" background="#ffffff">
+  <VBox spacing="16" padding="32" align="stretch">
+    <Label text="Opciones" font_size="28" align="center" color="#f8fafc" />
+    <Panel background="#1f2937" border_radius="10" padding="20" spacing="12" align="stretch">
+      <Label text="Nombre" font_size="16" color="#e2e8f0" />
+      <TextInput id="input_nombre" placeholder="Escribe aquí..." />
+    </Panel>
+    <HBox spacing="12" align="center">
+      <Button text="Volver" id="btn_volver" background="#3b82f6"
+              hover_background="#4f93f7" pressed_background="#2f6ce0" />
+    </HBox>
+  </VBox>
+</AppWindow>

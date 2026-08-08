@@ -7,8 +7,9 @@ class Container(UIWidget):
     def __init__(self, id=None, spacing=0, padding=0, background=None,
                  border_radius=0.0, border_width=0.0, border_color=None,
                  gradient=None, x=None, y=None, width=None, height=None,
-                 align="stretch", pack="start", **kw):
+                 align="stretch", pack="start", title=None, **kw):
         super().__init__(id=id, x=x, y=y, width=width, height=height)
+        self.title = title
         self.spacing = spacing
         self.padding = padding
         self.background = background

@@ -4,20 +4,29 @@
 #   * Ventana:    GLFW con CLIENT_API=NO_API (sin contexto OpenGL jamás)
 #   * Render:     Vulkan (swapchain, render pass, pipelines, command buffers)
 #   * UI:         árbol de widgets definido en XML o en código
+#   * Ventana XML: el tamaño, el título y el color de fondo se leen de la
+#                 cabecera <AppWindow width height title background> del XML.
+#                 Python solo aplica la lógica: todo el diseño visual vive
+#                 en los archivos .xml (en Python únicamente eventos/lógica).
+#   * Interfaces: varios XML cargados como interfaces (load_interfaces /
+#                 load_interfaces_from_dir), con transiciones fade.
 #   * Fuentes:    recursos base en resources/fonts/, familia en el atributo
 #                 font="..." de Label/Button (por defecto "dejavu")
-#   * Interfaces: varios XML cargados como interfaces, con transiciones fade
 #   * Shaders:    GLSL 450 en shaders/, compilados a SPIR-V con glslangValidator
 #
 # MODO SUPREMO (uso recomendado):
 #   from opngl import App
 #
-#   app = App("ui.xml", title="Mi App")          # UI declarativa desde XML
+#   app = App("ui.xml")                          # UI + ventana desde XML
 #   app.on_click("boton1", lambda b: print("Click!"))
 #   app.run()
 #
+#   #  o cargar TODOS los .xml de un directorio como interfaces:
+#   app, interfaces = load_interfaces_from_dir("ui/")
+#   app.set_interface("menu", transition=True, duration=0.4)
+#
 #   #  o varias interfaces con transición:
-#   app.load_interface("menu", "menu.xml")
+#   app = App("menu.xml")                        # la ventana se lee de menu.xml
 #   app.load_interface("juego", "juego.xml")
 #   app.set_interface("juego", transition=True, duration=0.4)
 #
@@ -26,6 +35,7 @@
 #   app.button(text="Hola", id="btn").on_click(...)
 #   app.run()
 # =========================================================================
+import fnmatch
 import time
 
 import os
@@ -47,7 +57,7 @@ from opngl.widgets.button import Button
 from opngl.widgets.image import Image
 from opngl.widgets.label import Label
 from opngl.widgets.textinput import TextInput
-from opngl.xml_parser.parser import XMLUIParser
+from opngl.xml_parser.parser import XMLUIParser, window_config
 from opngl.xml_parser.layout import apply_layout
 
 __version__ = "0.1.0"
@@ -71,6 +81,7 @@ __all__ = [
     "TextInput",
     "AudioManager",
     "XMLUIParser",
+    "load_interfaces_from_dir",
 ]
 
 
@@ -79,9 +90,23 @@ class App:
 
     def __init__(self, xml=None, width=800, height=600, title="OpnGL App",
                  background="#111827"):
+        # La ventana (tamaño, título y fondo) se maneja desde la cabecera
+        # <AppWindow> del XML cuando se pasa uno: el XML manda, Python solo
+        # aplica la lógica.
+        if xml is not None:
+            cfg = window_config(xml)
+            if cfg.get("width") is not None:
+                width = int(cfg["width"])
+            if cfg.get("height") is not None:
+                height = int(cfg["height"])
+            if cfg.get("title"):
+                title = cfg["title"]
+            if cfg.get("background"):
+                background = cfg["background"]
         self.width = width
         self.height = height
         self.title = title
+        self.background = background
         self.window = OpnGLWindow(width=width, height=height, title=title)
         self.window.initialize()
         print("--- Inicializando Vulkan (GLFW sin OpenGL, CLIENT_API=NO_API) ---")
@@ -89,6 +114,7 @@ class App:
         self.device = VulkanDevice(self.window)
         self.swapchain = VulkanSwapchain(self.device, self.window)
         self.renderer = Renderer(self.device, self.swapchain, self.window)
+        self._apply_clear_color(background)
         self.ui = UIRenderer()
         self.audio = AudioManager()
         self._on_frame = None
@@ -117,6 +143,7 @@ class App:
         root = self._parse_root(source)
         self.interfaces["main"] = root
         self.set_root(root)
+        self._sync_clear_color(root)
         return root
 
     def load_interface(self, name, source):
@@ -124,6 +151,38 @@ class App:
         root = self._parse_root(source)
         self.interfaces[name] = root
         return root
+
+    def load_interfaces(self, *sources, names=None):
+        """Carga varios XML (rutas o cadenas) como interfaces con nombre.
+        `names` asigna nombres personalizados; si no, se usa el nombre del
+        archivo sin extensión. Devuelve un dict {nombre: AppWindow}."""
+        loaded = {}
+        for i, source in enumerate(sources):
+            name = None
+            if names is not None and i < len(names):
+                name = names[i]
+            if name is None:
+                base = os.path.basename(source)
+                if base.lower().endswith(".xml"):
+                    name = os.path.splitext(base)[0]
+                else:
+                    name = "interfaz_{}".format(i)
+            self.interfaces[name] = self._parse_root(source)
+            loaded[name] = self.interfaces[name]
+        return loaded
+
+    def load_interfaces_from_dir(self, directory, pattern="*.xml"):
+        """Carga todos los .xml de `directory` como interfaces con nombre
+        (nombre de archivo sin extensión), listos para usarse con
+        set_interface(). Devuelve un dict {nombre: AppWindow}."""
+        directory = os.path.abspath(directory)
+        if not os.path.isdir(directory):
+            raise FileNotFoundError(
+                "[OpnGL] Directorio de interfaces no encontrado: {}".format(directory))
+        files = sorted(os.path.join(directory, f) for f in os.listdir(directory)
+                       if fnmatch.fnmatch(f, pattern)
+                       and os.path.isfile(os.path.join(directory, f)))
+        return self.load_interfaces(*files)
 
     def set_interface(self, name, transition=False, duration=0.3):
         """Activa la interfaz <name>. Si transition=True, hace un fade."""
@@ -135,6 +194,7 @@ class App:
         else:
             self.ui.set_root(root)
         self.root = root
+        self._sync_clear_color(root)
         return root
 
     def set_root(self, root):
@@ -193,6 +253,18 @@ class App:
 
     def _apply_layout(self):
         apply_layout(self.root, self.width, self.height)
+
+    def _apply_clear_color(self, background):
+        """Limpia el framebuffer con el color de fondo definido en el XML."""
+        if background:
+            r, g, b, a = hex_color_to_rgba(background)
+            self.renderer.clear_color = (r, g, b, a)
+
+    def _sync_clear_color(self, root):
+        """Sincroniza el clear color con el fondo de la interfaz activa."""
+        bg = getattr(root, "background", None)
+        if bg:
+            self._apply_clear_color(bg)
 
     def layout(self):
         """Reaplica el layout tras cambios programáticos."""
@@ -427,3 +499,32 @@ class OpnGL:
         raise RuntimeError(
             "[OpnGL] draw_arrays requiere un command buffer activo. "
             "Usa app.draw(vertices, ...) dentro de app.on_frame().")
+
+
+# ------------------------------------------------------------------------
+# Carga de interfaces desde XML
+# ------------------------------------------------------------------------
+def load_interfaces_from_dir(directory, pattern="*.xml"):
+    """Función de nivel superior: crea una App y carga TODOS los .xml de
+    `directory` como interfaces (nombre = archivo sin extensión), listos para
+    usarse con app.set_interface() / app.on_click().
+
+    La ventana (tamaño, título y color de fondo) se lee de la cabecera
+    <AppWindow> del primer XML. Python solo aplica la lógica; el diseño
+    visual vive 100% en los archivos .xml.
+
+    Devuelve (app, {nombre: AppWindow}).
+    """
+    directory = os.path.abspath(directory)
+    if not os.path.isdir(directory):
+        raise FileNotFoundError(
+            "[OpnGL] Directorio de interfaces no encontrado: {}".format(directory))
+    files = sorted(os.path.join(directory, f) for f in os.listdir(directory)
+                   if fnmatch.fnmatch(f, pattern)
+                   and os.path.isfile(os.path.join(directory, f)))
+    if not files:
+        raise FileNotFoundError(
+            "[OpnGL] No se encontraron archivos '{}' en '{}'".format(pattern, directory))
+    app = App(files[0])
+    app.load_interfaces(*files[1:])
+    return app, app.interfaces

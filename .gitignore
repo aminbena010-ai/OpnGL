@@ -1,2 +1,42 @@
+# Build / packaging
 build/
-opengl.egg-info/
+dist/
+*.egg-info/
+*.egg
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.dylib
+.Python
+.venv/
+venv/
+env/
+*.pyc
+*.pyo
+.coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Vulkan / shaders compilados
+bin/
+**/*.spv
+**/*.vs
+**/*..fs
+
+# Distribución
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+opgl-*.whl
+opgl-*.tar.gz
+
+# Mantener pyproject.toml
+!pyproject.toml
+!README.md
+!LICENSE

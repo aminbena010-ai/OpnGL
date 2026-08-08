@@ -1,0 +1,19 @@
+<!-- Interfaz principal. La ventana (tamaño, título y fondo) se define en la
+     cabecera <AppWindow>: Python solo aplica la lógica. -->
+<AppWindow width="1200" height="600" title="OpnGL + Vulkan UI" background="#111827">
+  <VBox spacing="16" padding="32" align="stretch" pack="center">
+    <Label text="Motor OpnGL activo" font_size="30" align="center" color="#f8fafc" />
+    <Label text="Interfaz declarativa 100% desde XML (Vulkan puro)"
+           font_size="17" align="center" color="#94a3b8" />
+    <Panel background="#1e293b" border_radius="10" padding="24" spacing="12" align="stretch">
+      <HBox spacing="12" align="center">
+        <Button text="Renderizar" id="btn_render" background="#3b82f6"
+                hover_background="#4f93f7" pressed_background="#2f6ce0" />
+        <Button text="Opciones" id="btn_opciones" background="#10b981"
+                hover_background="#34d399" pressed_background="#059669" />
+        <Button text="Cerrar" id="btn_close" background="#ef4444"
+                hover_background="#f87171" pressed_background="#dc2626" />
+      </HBox>
+    </Panel>
+  </VBox>
+</AppWindow>

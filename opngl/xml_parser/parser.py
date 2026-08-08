@@ -43,7 +43,7 @@ class WidgetFactory:
 _TAG_FACTORIES = {
     "AppWindow": WidgetFactory(AppWindow, {
         "width": 800, "height": 600, "padding": 20, "spacing": 12,
-        "background": "#111827", "border_radius": 0.0,
+        "title": "OpnGL App", "background": "#111827", "border_radius": 0.0,
         "border_width": 0.0, "border_color": None, "gradient": None,
         "align": "stretch", "pack": "start",
     }, {k: float for k in _FLOAT} | {k: int for k in _INT}),
@@ -100,6 +100,38 @@ _TAG_FACTORIES = {
 _CONTAINERS = {"AppWindow", "VBox", "HBox", "Panel"}
 
 
+def _load_root_element(source):
+    """Carga el elemento raíz de un documento XML (ruta a archivo o cadena)."""
+    if isinstance(source, str) and ("<" in source and ">" in source):
+        return ET.fromstring(source)
+    return ET.parse(source).getroot()
+
+
+def window_config(source):
+    """Lee la cabecera <AppWindow> de un documento XML (archivo o cadena) y
+    devuelve la configuración de la ventana sin construir el árbol de widgets:
+        {width, height, title, background}
+    El título, el tamaño y el color de fondo viven en el XML: Python solo
+    aplica la lógica. Se usan los valores por defecto cuando no se indican."""
+    root = _load_root_element(source)
+    if root.tag != "AppWindow":
+        raise ValueError(
+            "[OpnGL UI] El documento XML debe comenzar con <AppWindow> "
+            "para definir la ventana (título, tamaño y fondo)")
+    factory = _TAG_FACTORIES["AppWindow"]
+    attrs = dict(factory.defaults)
+    for key, value in root.attrib.items():
+        key = key.replace("-", "_")
+        if key in factory.numeric:
+            try:
+                attrs[key] = factory.numeric[key](value)
+            except ValueError:
+                raise ValueError("Atributo '{}' debe ser numérico: '{}'".format(key, value))
+        else:
+            attrs[key] = value
+    return {k: attrs.get(k) for k in ("width", "height", "title", "background")}
+
+
 class XMLUIParser:
     def __init__(self, source):
         """source: ruta a un archivo .xml o una cadena XML."""
@@ -111,9 +143,7 @@ class XMLUIParser:
 
     # ------------------------------------------------------------------ #
     def _load_tree(self):
-        if isinstance(self.source, str) and ("<" in self.source and ">" in self.source):
-            return ET.fromstring(self.source)
-        return ET.parse(self.source).getroot()
+        return _load_root_element(self.source)
 
     def parse(self):
         root = self._load_tree()

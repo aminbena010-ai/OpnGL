@@ -1,51 +1,39 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "opngl"
 version = "0.1.0"
-description = "Motor gráfico sobre Vulkan puro, escrito en Python"
+description = "Motor gráfico y de interfaz de usuario de escritorio basado en Python y Vulkan"
 readme = "README.md"
-requires-python = ">=3.9"
-license = { text = "MIT (con cláusula de atribución BluePanda)" }
-authors = [{ name = "BluePanda" }]
-keywords = ["vulkan", "ui", "gui", "gamedev", "opengl"]
+authors = [
+    { name = "BluePanda" }
+]
+license = { text = "MIT" }
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Topic :: Multimedia :: Graphics",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Application Frameworks"
 ]
-
+requires-python = ">=3.8"
 dependencies = [
-    "glfw",
     "vulkan",
-    "Pillow",
+    "cffi",
+    "glfw",
+    "pillow",
+    "miniaudio"
 ]
-
-[project.optional-dependencies]
-audio = ["miniaudio"]
-
-[project.urls]
-Homepage = "https://github.com/aminbena010-ai/OpnGL"
-Repository = "https://github.com/aminbena010-ai/OpnGL"
-
-[project.scripts]
-opngl = "opngl.__main__:main"
-
-[tool.setuptools]
-include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["opngl*"]
 
 [tool.setuptools.package-data]
-opngl = ["shaders/*", "resources/fonts/*", "resources/images/*", "resources/sounds/*"]
+opngl = [
+    "shaders/*.vert",
+    "shaders/*.frag",
+    "resources/fonts/*.ttf",
+    "resources/images/*",
+    "resources/sounds/*"
+]
