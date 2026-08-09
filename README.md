@@ -58,3 +58,4 @@ BluePanda**. Texto completo en [`LICENSE`](LICENSE).
 ```text
 Copyright (c) 2026 BluePanda
 ```
+[**Inicio rápido**](https://github.com/aminbena010-ai/Docs-OpnGL).
