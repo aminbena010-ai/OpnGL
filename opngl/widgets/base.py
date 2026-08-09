@@ -118,8 +118,10 @@ class UIWidget:
             pass
 
     # -- dibujo ----------------------------------------------------------
-    def draw(self, batch, font):
-        raise NotImplementedError
+    def draw(self, batch, fonts):
+        """Por defecto dibuja los hijos. Los widgets hoja redefinen este método."""
+        for c in self.children:
+            c.draw(batch, fonts)
 
     # -- hit-testing -----------------------------------------------------
     def contains(self, px, py):

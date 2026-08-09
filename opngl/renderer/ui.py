@@ -27,6 +27,15 @@ class UIRenderer:
             return
         self._transition = [self.root, new_root, 0.0, max(0.01, duration)]
 
+    def _active_root(self):
+        """Devuelve la raíz donde los eventos deben dirigirse.
+
+        Durante una transición de fade, los eventos van a la nueva raíz
+        (que se está fundiendo en), no a la vieja que se está fundiendo fuera."""
+        if self._transition is not None:
+            return self._transition[1]
+        return self.root
+
     def update(self, dt):
         if self._transition is not None:
             self._transition[2] += dt
@@ -67,7 +76,8 @@ class UIRenderer:
     def on_mouse_move(self, x, y):
         if self.root is None:
             return
-        hit = self.root.find_at(x, y)
+        target = self._active_root()
+        hit = target.find_at(x, y)
         if hit is not self._hovered:
             if self._hovered is not None:
                 self._hovered.hovered = False
@@ -78,17 +88,18 @@ class UIRenderer:
     def on_mouse_button(self, button, action, mods, x, y):
         if self.root is None or button != glfw.MOUSE_BUTTON_LEFT:
             return
+        target = self._active_root()
         if action == glfw.PRESS:
-            self._pressed = self.root.find_at(x, y)
+            self._pressed = target.find_at(x, y)
             if self._pressed is not None:
                 self._pressed.pressed = True
             self._handle_focus(self._pressed, x, y)
         elif action == glfw.RELEASE:
-            target = self.root.find_at(x, y)
+            hit = target.find_at(x, y)
             if self._pressed is not None:
                 self._pressed.pressed = False
-                if target is self._pressed and target.click_handler is not None:
-                    target.click_handler(target)
+                if hit is self._pressed and self._pressed.click_handler is not None:
+                    self._pressed.click_handler(self._pressed)
             self._pressed = None
 
     def _handle_focus(self, widget, x, y):

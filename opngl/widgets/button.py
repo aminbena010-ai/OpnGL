@@ -7,7 +7,7 @@ class Button(UIWidget):
     def __init__(self, text="Button", width=None, height=None,
                  background="#3b82f6", hover_background="#4f93f7",
                  pressed_background="#2f6ce0", color="#ffffff",
-                 font_size=16, border_radius=6.0, border_width=0.0,
+                 font_size=16.0, border_radius=6.0, border_width=0.0,
                  border_color=None, gradient=None, font=None, sound=None,
                  x=None, y=None, id=None):
         super().__init__(id=id, x=x, y=y, width=width, height=height)

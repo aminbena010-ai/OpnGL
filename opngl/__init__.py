@@ -38,12 +38,7 @@
 import fnmatch
 import time
 import inspect
-
 import os
-
-import glfw
-import vulkan as vk
-from vulkan import ffi
 
 from opngl.core.window import OpnGLWindow
 from opngl.core.device import VulkanDevice
@@ -61,7 +56,7 @@ from opngl.widgets.textinput import TextInput
 from opngl.xml_parser.parser import XMLUIParser, window_config
 from opngl.xml_parser.layout import apply_layout
 
-__version__ = "0.1.0"
+__version__ = "0.1.2"
 
 __all__ = [
     "App",
@@ -82,7 +77,9 @@ __all__ = [
     "TextInput",
     "AudioManager",
     "XMLUIParser",
+    "load_xmls",
     "load_interfaces_from_dir",
+    "xml",
 ]
 
 
@@ -530,9 +527,6 @@ def load_xmls(directory, pattern="*.xml"):
     app.load_interfaces(*files[1:])
     return app, app.interfaces
 
-import os
-import inspect
-import fnmatch
 
 def xml(filename_or_pattern):
     """

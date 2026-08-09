@@ -1,6 +1,6 @@
 # Contenedores: VBox, HBox, Panel y AppWindow con medición y layout 2D.
 from opngl.core.vkutil import hex_color_to_rgba
-from opngl.widgets.base import UIWidget, quad_verts, rounded_quad_verts
+from opngl.widgets.base import UIWidget, rounded_quad_verts
 
 
 class Container(UIWidget):

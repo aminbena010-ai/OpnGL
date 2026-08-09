@@ -22,7 +22,7 @@ Thumbs.db
 *~
 opgl-*.whl
 opgl-*.tar.gz
-
+*.token
 # Mantener pyproject.toml
 pyproject.toml
 !README.md

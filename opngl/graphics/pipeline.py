@@ -2,8 +2,6 @@
 # ShaderProgram y un formato de vértices, de forma declarativa.
 import vulkan as vk
 
-from opngl.core.vkutil import check, cstr
-
 
 class VertexFormat:
     """Descripción del layout de un vértice (binding + attributos)."""

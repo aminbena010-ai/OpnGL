@@ -3,7 +3,7 @@
 import vulkan as vk
 from vulkan import ffi
 
-from opngl.core.vkutil import check, instfn, devfn
+from opngl.core.vkutil import check
 
 VK_PRESENT_MODE_MAILBOX = 1
 VK_PRESENT_MODE_FIFO = 2

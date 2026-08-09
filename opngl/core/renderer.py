@@ -7,14 +7,12 @@ from array import array
 import vulkan as vk
 from vulkan import ffi
 
-from opngl.core import vkutil
-from opngl.core.vkutil import check, VK_ERROR_OUT_OF_DATE_KHR, VK_SUBOPTIMAL_KHR, cstr
+from opngl.core.vkutil import check, VK_ERROR_OUT_OF_DATE_KHR, VK_SUBOPTIMAL_KHR
 from opngl.graphics.buffer import DynamicBuffer
 from opngl.graphics.fonts import FontManager
 from opngl.graphics.images import ImageManager
 from opngl.graphics.pipeline import GraphicsPipeline, VertexFormat
 from opngl.graphics.shader import ShaderProgram
-from opngl.graphics.texture import FontAtlas
 
 UINT64_MAX = 0xFFFFFFFFFFFFFFFF
 SHADERS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "shaders")
