@@ -4,7 +4,6 @@ import os
 import vulkan as vk
 from vulkan import ffi
 
-from opngl.core.vkutil import check
 from opngl.graphics.font8x8 import FONT8X8, FIRST, LAST
 
 GLYPH_W = 8
@@ -51,7 +50,6 @@ class Texture:
         self._upload(pixels)
 
     def _upload(self, pixels):
-        row_bytes = self.width
         staging, staging_mem = self.device.create_buffer(
             len(pixels), vk.VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
             vk.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | vk.VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)

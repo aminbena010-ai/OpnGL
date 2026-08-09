@@ -290,9 +290,7 @@ class VulkanDevice:
             vk.vkDestroyDevice(self.device, None)
             self.device = None
         if self.surface:
-            self.inst["vkDestroySurfaceKHR"] if False else None
-            # la superficie se destruye con la instancia en la versión KHR:
-            # vkDestroySurfaceKHR es de nivel instance
+            # vkDestroySurfaceKHR es de nivel instance:
             try:
                 fn = vkutil.instfn(self.instance, "vkDestroySurfaceKHR",
                                    "void (*)(VkInstance, VkSurfaceKHR, const VkAllocationCallbacks*)")

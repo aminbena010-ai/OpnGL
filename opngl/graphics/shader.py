@@ -4,7 +4,7 @@ import os
 
 import vulkan as vk
 
-from opngl.core.vkutil import check, spv_compile, spv_create_module
+from opngl.core.vkutil import spv_compile, spv_create_module
 
 _VERT_STAGE = vk.VK_SHADER_STAGE_VERTEX_BIT
 _FRAG_STAGE = vk.VK_SHADER_STAGE_FRAGMENT_BIT

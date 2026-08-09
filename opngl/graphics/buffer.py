@@ -2,8 +2,6 @@
 # El usuario solo ve listas de python; el copy a VRAM es automático.
 import vulkan as vk
 
-from opngl.core.vkutil import check
-
 
 class VertexBuffer:
     """Buffer de vértices device-local subido mediante staging."""

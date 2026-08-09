@@ -61,7 +61,7 @@ def spv_compile(glsl_source, stage, shader_kind="vert"):
     stage: 'vert' | 'frag'
     Devuelve un bytearray con el SPIR-V (múltiplo de 4 bytes).
     """
-    ext = {shader_kind: shader_kind}.get(shader_kind, shader_kind)
+    ext = shader_kind
     with tempfile.TemporaryDirectory(prefix="opngl_shader_") as tmp:
         src_path = os.path.join(tmp, "shader." + ext)
         spv_path = os.path.join(tmp, "shader.spv")

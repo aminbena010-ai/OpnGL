@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "opngl"
-version = "0.1.1"
+version = "0.1.2"
 description = "Motor gráfico y de interfaz de usuario de escritorio basado en Python y Vulkan"
 readme = "README.md"
 authors = [

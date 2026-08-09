@@ -4,7 +4,7 @@ from opngl.widgets.base import UIWidget
 
 
 class Label(UIWidget):
-    def __init__(self, text="", font_size=16, color="#ffffff", x=None, y=None,
+    def __init__(self, text="", font_size=16.0, color="#ffffff", x=None, y=None,
                  width=None, height=None, align="left", valign="top",
                  font=None, id=None):
         super().__init__(id=id, x=x, y=y, width=width, height=height)
@@ -34,6 +34,8 @@ class Label(UIWidget):
         if not self.visible or not self.text:
             return
         atlas = fonts.get(self.font)
+        if atlas is None:
+            return
         color = hex_color_to_rgba(self.color)
         mw = self.max_width if self.max_width is not None else self.width
         lines, total_h = atlas.wrap_lines(self.text, self.font_size, mw)

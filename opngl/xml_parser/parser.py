@@ -3,7 +3,6 @@
 # widgets del motor, validando atributos y reportando errores con contexto.
 import xml.etree.ElementTree as ET
 
-from opngl.widgets.base import UIWidget
 from opngl.widgets.containers import AppWindow, VBox, HBox, Panel
 from opngl.widgets.button import Button
 from opngl.widgets.image import Image
@@ -26,7 +25,6 @@ class WidgetFactory:
 
     def build(self, node):
         attrs = dict(self.defaults)
-        unknown = []
         for key, value in node.attrib.items():
             key = key.replace("-", "_")
             if key in self.numeric:

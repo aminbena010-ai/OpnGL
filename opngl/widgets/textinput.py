@@ -237,7 +237,6 @@ class TextInput(UIWidget):
         if atlas is None:
             return
         self._clamp_scroll()
-        content_w = self._content_width()
 
         shown = self.text if self.text else self.placeholder
         color_hex = self.color if self.text else self.placeholder_color
@@ -248,7 +247,6 @@ class TextInput(UIWidget):
         left = abs_w[self._scroll]
         text_x = self.x + _PAD - left
         ty = self.y + max(0.0, (h - atlas.line_height(self.font_size)) / 2.0)
-        mw = max(8.0, content_w + left)
 
         if shown:
             verts = atlas.build_text(shown, text_x, ty, self.font_size, text_color,
